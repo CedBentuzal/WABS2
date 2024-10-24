@@ -58,10 +58,18 @@ def create_account():
     return f"Account created for {username}!"
     
 
-@app.route('/accounts')
+@app.route('/accounts', methods=['GET','POST'])
 def accounts():
+    user_id = request.form.get('user_id')
+    user = User.query.get(user_id)
     users = User.query.all()
+
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return "User deleted successfully", 200
     return render_template('accounts.html', users=users)
+
 
 
 if __name__ == '__main__':
