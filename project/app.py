@@ -15,6 +15,22 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
 
 
+@app.route('/log_in', methods =['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        user = User.query.filter_by(username=username).first()
+        
+        if user and user.password == password:
+            
+            return f"Welcome, {username}!"
+        else:
+            
+            return "Error: Invalid username or password.", 401
+    return render_template('login.html')
+
 @app.route('/')
 def index():
     return render_template('index.html')
