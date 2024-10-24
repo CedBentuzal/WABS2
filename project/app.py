@@ -15,6 +15,9 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
 
 
+@app.route('/')
+def loginpage():
+    return render_template('login.html')
 @app.route('/log_in', methods =['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -29,9 +32,9 @@ def login():
         else:
             
             return "Error: Invalid username or password.", 401
-    return render_template('login.html')
+    return
 
-@app.route('/')
+@app.route('/create_account')
 def index():
     return render_template('index.html')
 
@@ -51,8 +54,9 @@ def create_account():
     new_user = User(username=username, password=password)
     db.session.add(new_user)
     db.session.commit()
-
+    
     return f"Account created for {username}!"
+    
 
 @app.route('/accounts')
 def accounts():
